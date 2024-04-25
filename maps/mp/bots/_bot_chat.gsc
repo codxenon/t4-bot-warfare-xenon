@@ -268,7 +268,28 @@ start_chat_watch()
 			case "attack_dog":
 				self thread bot_chat_attack_dog_watch( a, b, c, d, e, f, g );
 				break;
+				
+			case "connection":
+				self thread bot_chat_connection_player_watch( a, b, c, d, e, f, g );
+				break;
 		}
+	}
+}
+
+/*
+	When a player connected
+*/
+bot_chat_connection_player_watch( conn, player, playername, d, e, f, g )
+{
+	self endon( "disconnect" );
+	
+	switch ( conn )
+	{
+		case "connected":
+			break;
+			
+		case "disconnected":
+			break;
 	}
 }
 
