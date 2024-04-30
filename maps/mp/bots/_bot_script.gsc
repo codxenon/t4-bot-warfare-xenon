@@ -3010,6 +3010,12 @@ bot_killstreak_think_loop()
 {
 	curWeap = self getcurrentweapon();
 	
+	if ( curWeap == "radar_mp" || curWeap == "dogs_mp" || curWeap == "artillery_mp" )
+	{
+		self thread changeToWeapon( self.lastdroppableweapon );
+		return;
+	}
+	
 	if ( curWeap == "none" || !isWeaponDroppable( curWeap ) )
 	{
 		curWeap = self.lastdroppableweapon;
