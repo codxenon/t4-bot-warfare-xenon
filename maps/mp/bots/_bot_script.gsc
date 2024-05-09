@@ -3292,6 +3292,7 @@ bot_target_vehicle_loop()
 	myEye = self getEyePos();
 	target = undefined;
 	myAngles = self getplayerangles();
+	hasRocket = self getammocount( "bazooka_mp" );
 	
 	for ( i = 0; i < level.players.size; i++ )
 	{
@@ -3324,7 +3325,7 @@ bot_target_vehicle_loop()
 			continue;
 		}
 		
-		if ( getConeDot( vehicle.origin, self.origin, myAngles ) < 0.6 && !hasRecon )
+		if ( getConeDot( vehicle.origin, self.origin, myAngles ) < 0.6 && !hasRecon && !hasRocket )
 		{
 			continue;
 		}
@@ -3356,14 +3357,9 @@ bot_target_vehicle()
 	
 	for ( ;; )
 	{
-		wait( randomintrange( 1, 3 ) );
+		wait( randomintrange( 1, 3 ) * 0.5 );
 		
 		if ( self HasScriptEnemy() )
-		{
-			continue;
-		}
-		
-		if ( self.pers[ "bots" ][ "skill" ][ "base" ] <= 1 )
 		{
 			continue;
 		}
@@ -3384,7 +3380,7 @@ bot_vehicle_attack( target )
 {
 	target endon( "death" );
 	
-	wait_time = randomintrange( 14, 20 );
+	wait_time = randomintrange( 14, 20 ) * 2;
 	
 	for ( i = 0; i < wait_time; i++ )
 	{
