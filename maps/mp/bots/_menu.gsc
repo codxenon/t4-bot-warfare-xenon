@@ -436,16 +436,13 @@ CursMove( direction )
 			self.menu[ "X" ][ "Scroller" ].x = self.menutext[ self.curs[ "Main" ][ "X" ] ].x;
 			self.menu[ "X" ][ "Scroller" ].y = self.menutext[ self.curs[ "Main" ][ "X" ] ].y;
 			
-			if ( isdefined( self.menutext ) )
+			for ( i = 0; i < self.menutext.size; i++ )
 			{
-				for ( i = 0; i < self.menutext.size; i++ )
+				if ( isdefined( self.menutext[ i ] ) )
 				{
-					if ( isdefined( self.menutext[ i ] ) )
-					{
-						self.menutext[ i ].fontscale = 1.5;
-						self.menutext[ i ].color = ( 1, 1, 1 );
-						self.menutext[ i ].glowalpha = 0;
-					}
+					self.menutext[ i ].fontscale = 1.5;
+					self.menutext[ i ].color = ( 1, 1, 1 );
+					self.menutext[ i ].glowalpha = 0;
 				}
 			}
 		}
