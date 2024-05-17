@@ -74,6 +74,11 @@ init()
 		setdvar( "bots_manage_fill_kick", false ); // kick bots if too many
 	}
 	
+	if ( getdvar( "bots_manage_fill_watchplayers" ) == "" )
+	{
+		setdvar( "bots_manage_fill_watchplayers", false ); // add bots when player exists, kick if not
+	}
+	
 	if ( getdvar( "bots_team" ) == "" )
 	{
 		setdvar( "bots_team", "autoassign" ); // which team for bots to join
@@ -264,7 +269,7 @@ init()
 	level thread onPlayerConnect();
 	level thread handleBots();
 	level thread onPlayerChat();
-
+	
 	array_thread( getentarray( "misc_turret", "classname" ), ::turret_monitoruse_watcher );
 }
 
@@ -920,7 +925,7 @@ addBots_loop()
 	
 	fillMode = getdvarint( "bots_manage_fill_mode" );
 	
-	if ( fillMode == 2 || fillMode == 3 )
+	if ( fillMode == 2 || fillMode == 3 || fillMode == 5 )
 	{
 		setdvar( "bots_manage_fill", getGoodMapAmount() );
 	}
@@ -930,6 +935,8 @@ addBots_loop()
 	players = 0;
 	bots = 0;
 	spec = 0;
+	axisplayers = 0;
+	alliesplayers = 0;
 	
 	playercount = level.players.size;
 	
@@ -948,37 +955,6 @@ addBots_loop()
 		else
 		{
 			players++;
-		}
-	}
-	
-	if ( !randomint( 999 ) )
-	{
-		setdvar( "testclients_doreload", true );
-		wait 0.1;
-		setdvar( "testclients_doreload", false );
-		doExtraCheck();
-	}
-	
-	if ( fillMode == 4 )
-	{
-		axisplayers = 0;
-		alliesplayers = 0;
-		
-		playercount = level.players.size;
-		
-		for ( i = 0; i < playercount; i++ )
-		{
-			player = level.players[ i ];
-			
-			if ( player is_bot() )
-			{
-				continue;
-			}
-			
-			if ( !isdefined( player.pers[ "team" ] ) )
-			{
-				continue;
-			}
 			
 			if ( player.pers[ "team" ] == "axis" )
 			{
@@ -989,26 +965,19 @@ addBots_loop()
 				alliesplayers++;
 			}
 		}
-		
-		result = fillAmount - abs( axisplayers - alliesplayers ) + bots;
-		
-		if ( players == 0 )
-		{
-			if ( bots < fillAmount )
-			{
-				result = fillAmount - 1;
-			}
-			else if ( bots > fillAmount )
-			{
-				result = fillAmount + 1;
-			}
-			else
-			{
-				result = fillAmount;
-			}
-		}
-		
-		bots = result;
+	}
+	
+	if ( getdvarint( "bots_manage_fill_spec" ) )
+	{
+		players += spec;
+	}
+	
+	if ( !randomint( 999 ) )
+	{
+		setdvar( "testclients_doreload", true );
+		wait 0.1;
+		setdvar( "testclients_doreload", false );
+		doExtraCheck();
 	}
 	
 	amount = bots;
@@ -1016,24 +985,48 @@ addBots_loop()
 	if ( fillMode == 0 || fillMode == 2 )
 	{
 		amount += players;
+	}
+	
+	// use bots as balance
+	if ( fillMode == 4 || fillMode == 5 )
+	{
+		diffPlayers = abs( alliesplayers - axisplayers );
+		amount = fillAmount - ( diffPlayers - bots );
 		
-		if ( getdvarint( "bots_manage_fill_spec" ) )
+		if ( players + diffPlayers < fillAmount )
 		{
-			amount += spec;
+			amount = players + bots;
 		}
+	}
+	
+	if ( players <= 0 && getdvarint( "bots_manage_fill_watchplayers" ) )
+	{
+		amount = fillAmount + bots;
 	}
 	
 	if ( amount < fillAmount )
 	{
-		setdvar( "bots_manage_add", 1 );
+		setdvar( "bots_manage_add", fillAmount - amount );
 	}
 	else if ( amount > fillAmount && getdvarint( "bots_manage_fill_kick" ) )
 	{
-		tempBot = getBotToKick();
+		botsToKick = amount - fillAmount;
 		
-		if ( isdefined( tempBot ) )
+		if ( botsToKick > 64 )
 		{
-			kick( tempBot getentitynumber() );
+			botsToKick = 64;
+		}
+		
+		for ( i = 0; i < botsToKick; i++ )
+		{
+			tempBot = getBotToKick();
+			
+			if ( isdefined( tempBot ) )
+			{
+				kick( tempBot getentitynumber(), "EXE_PLAYERKICKED" );
+				
+				wait 0.25;
+			}
 		}
 	}
 }
