@@ -98,9 +98,6 @@ removeChildFixed( element )
 	}
 	
 	self.children = temp;
-	
-	element.index = undefined;
-	element.parent = undefined;
 }
 
 destroyElemFixed()
