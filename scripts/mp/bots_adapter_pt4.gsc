@@ -1,8 +1,6 @@
 init()
 {
 	level.bot_builtins[ "printconsole" ] = ::do_printconsole;
-	level.bot_builtins[ "filewrite" ] = ::do_filewrite;
-	level.bot_builtins[ "fileread" ] = ::do_fileread;
 	level.bot_builtins[ "fileexists" ] = ::do_fileexists;
 	level.bot_builtins[ "botaction" ] = ::do_botaction;
 	level.bot_builtins[ "botstop" ] = ::do_botstop;
@@ -10,29 +8,21 @@ init()
 	level.bot_builtins[ "botmeleeparams" ] = ::do_botmeleeparams;
 	level.bot_builtins[ "botangles" ] = ::do_botangles;
 	level.bot_builtins[ "isbot" ] = ::do_isbot;
+	level.bot_builtins[ "fs_fopen" ] = ::do_fs_fopen;
+	level.bot_builtins[ "fs_fclose" ] = ::do_fs_fclose;
+	level.bot_builtins[ "fs_readline" ] = ::do_fs_readline;
+	level.bot_builtins[ "fs_writeline" ] = ::do_fs_writeline;
 }
 
 do_printconsole( s )
 {
-	printconsole( s );
-}
-
-do_filewrite( file, contents, mode )
-{
-	file = "scriptdata/" + file;
-	filewrite( file, contents, mode );
-}
-
-do_fileread( file )
-{
-	file = "scriptdata/" + file;
-	return fileread( file );
+	printf( s );
 }
 
 do_fileexists( file )
 {
 	file = "scriptdata/" + file;
-	return true;
+	return fs_testfile( file );
 }
 
 do_botaction( action )
@@ -57,11 +47,31 @@ do_botmeleeparams( yaw, dist )
 
 do_botangles( angles )
 {
-	self setplayerangles( angles );
-	// self botangles( angles[ 0 ], angles[ 1 ], angles[ 2 ] );
+	self botangles( angles );
 }
 
 do_isbot()
 {
 	return self isbot();
+}
+
+do_fs_fopen( file, mode )
+{
+	file = "scriptdata/" + file;
+	return fs_fopen( file, mode );
+}
+
+do_fs_fclose( fh )
+{
+	fs_fclose( fh );
+}
+
+do_fs_readline( fh )
+{
+	return fs_readline( fh );
+}
+
+do_fs_writeline( fh, contents )
+{
+	fs_writeline( fh, contents );
 }

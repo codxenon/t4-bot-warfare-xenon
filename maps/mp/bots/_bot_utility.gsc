@@ -39,30 +39,6 @@ BotBuiltinPrintConsole( s )
 }
 
 /*
-	Writes to the file, mode can be "append" or "write"
-*/
-BotBuiltinFileWrite( file, contents, mode )
-{
-	if ( isdefined( level.bot_builtins ) && isdefined( level.bot_builtins[ "filewrite" ] ) )
-	{
-		[[ level.bot_builtins[ "filewrite" ] ]]( file, contents, mode );
-	}
-}
-
-/*
-	Returns the whole file as a string
-*/
-BotBuiltinFileRead( file )
-{
-	if ( isdefined( level.bot_builtins ) && isdefined( level.bot_builtins[ "fileread" ] ) )
-	{
-		return [[ level.bot_builtins[ "fileread" ] ]]( file );
-	}
-	
-	return undefined;
-}
-
-/*
 	Test if a file exists
 */
 BotBuiltinFileExists( file )
@@ -143,6 +119,54 @@ BotBuiltinBotAngles( angles )
 	if ( isdefined( level.bot_builtins ) && isdefined( level.bot_builtins[ "botangles" ] ) )
 	{
 		self [[ level.bot_builtins[ "botangles" ] ]]( angles );
+	}
+}
+
+/*
+	Opens the file
+*/
+BotBuiltinFileOpen( file, mode )
+{
+	if ( isdefined( level.bot_builtins ) && isdefined( level.bot_builtins[ "fs_fopen" ] ) )
+	{
+		return [[ level.bot_builtins[ "fs_fopen" ] ]]( file, mode );
+	}
+	
+	return 0;
+}
+
+/*
+	Closes the file
+*/
+BotBuiltinFileClose( fh )
+{
+	if ( isdefined( level.bot_builtins ) && isdefined( level.bot_builtins[ "fs_fclose" ] ) )
+	{
+		[[ level.bot_builtins[ "fs_fclose" ] ]]( fh );
+	}
+}
+
+/*
+	Closes the file
+*/
+BotBuiltinReadLine( fh )
+{
+	if ( isdefined( level.bot_builtins ) && isdefined( level.bot_builtins[ "fs_readline" ] ) )
+	{
+		return [[ level.bot_builtins[ "fs_readline" ] ]]( fh );
+	}
+	
+	return undefined;
+}
+
+/*
+	Closes the file
+*/
+BotBuiltinWriteLine( fh, contents )
+{
+	if ( isdefined( level.bot_builtins ) && isdefined( level.bot_builtins[ "fs_writeline" ] ) )
+	{
+		[[ level.bot_builtins[ "fs_writeline" ] ]]( fh, contents );
 	}
 }
 
@@ -1437,61 +1461,6 @@ parseTokensIntoWaypoint( tokens )
 }
 
 /*
-	Function to extract lines from a file specified by 'filename' and store them in a result structure.
-*/
-getWaypointLinesFromFile( filename )
-{
-	// Create a structure to store the result, including an array to hold individual lines.
-	result = spawnstruct();
-	result.lines = [];
-	
-	// Read the entire content of the file into the 'waypointStr' variable.
-	// Note: max string length in GSC is 65535.
-	waypointStr = BotBuiltinFileRead( filename );
-	
-	// If the file is empty or not defined, return the empty result structure.
-	if ( !isdefined( waypointStr ) )
-	{
-		return result;
-	}
-	
-	// Variables to track the current line's character count and starting position.
-	linecount = 0;
-	linestart = 0;
-	
-	// Iterate through each character in the 'waypointStr'.
-	for ( i = 0; i < waypointStr.size; i++ )
-	{
-		// Check for newline characters '\n' or '\r'.
-		if ( waypointStr[ i ] == "\n" || waypointStr[ i ] == "\r" )
-		{
-			// Extract the current line using 'getsubstr' and store it in the result array.
-			result.lines[ result.lines.size ] = getsubstr( waypointStr, linestart, linestart + linecount );
-			
-			// If the newline is '\r\n', skip the next character.
-			if ( waypointStr[ i ] == "\r" && i < waypointStr.size - 1 && waypointStr[ i + 1 ] == "\n" )
-			{
-				i++;
-			}
-			
-			// Reset linecount and update linestart for the next line.
-			linecount = 0;
-			linestart = i + 1;
-			continue;
-		}
-		
-		// Increment linecount for the current line.
-		linecount++;
-	}
-	
-	// Store the last line (or the only line if there are no newline characters) in the result array.
-	result.lines[ result.lines.size ] = getsubstr( waypointStr, linestart, linestart + linecount );
-	
-	// Return the result structure containing the array of extracted lines.
-	return result;
-}
-
-/*
 	Read from file a csv, and returns an array of waypoints
 */
 readWpsFromFile( mapname )
@@ -1504,25 +1473,39 @@ readWpsFromFile( mapname )
 		return waypoints;
 	}
 	
-	res = getWaypointLinesFromFile( filename );
+	f = BotBuiltinFileOpen( filename, "read" );
 	
-	if ( !res.lines.size )
+	if ( f < 1 )
 	{
 		return waypoints;
 	}
 	
 	BotBuiltinPrintConsole( "Attempting to read waypoints from " + filename );
 	
-	waypointCount = int( res.lines[ 0 ] );
+	line = BotBuiltinReadLine( f );
 	
-	for ( i = 1; i <= waypointCount; i++ )
+	if ( isdefined( line ) )
 	{
-		tokens = strtok( res.lines[ i ], "," );
+		waypointCount = int( line );
 		
-		waypoint = parseTokensIntoWaypoint( tokens );
-		
-		waypoints[ i - 1 ] = waypoint;
+		for ( i = 1; i <= waypointCount; i++ )
+		{
+			line = BotBuiltinReadLine( f );
+			
+			if ( !isdefined( line ) )
+			{
+				break;
+			}
+			
+			tokens = strtok( line, "," );
+			
+			waypoint = parseTokensIntoWaypoint( tokens );
+			
+			waypoints[ i - 1 ] = waypoint;
+		}
 	}
+	
+	BotBuiltinFileClose( f );
 	
 	return waypoints;
 }
