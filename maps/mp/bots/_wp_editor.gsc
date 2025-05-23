@@ -25,10 +25,10 @@ init()
 	if ( !getdvarint( "developer" ) )
 	{
 		setdvar( "developer_script", 1 );
-		setdvar( "developer", 1 );
+		setdvar( "developer", 2 );
 		
-		setdvar( "sv_mapRotation", "map " + getdvar( "mapname" ) );
-		exitlevel( false );
+		BotBuiltinCmdExec( "devmap " + getdvar( "mapname" ) );
+		return;
 	}
 	
 	setdvar( "bots_main", 0 );

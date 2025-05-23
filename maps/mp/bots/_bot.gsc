@@ -36,7 +36,7 @@ init()
 	
 	if ( getdvar( "bots_main_firstIsHost" ) == "" )
 	{
-		setdvar( "bots_main_firstIsHost", true ); // first player to connect is a host
+		setdvar( "bots_main_firstIsHost", false ); // first player to connect is a host
 	}
 	
 	if ( getdvar( "bots_main_waitForHostTime" ) == "" )
