@@ -120,12 +120,13 @@ Make sure to disable this DVAR by adding ```set bots_main_firstIsHost 0``` in yo
 | bots_play_aim                    | If the bots can aim.                                                                           | 1          |
 
 ## Changelog
-- v2.3.0 (not released yet)
+- v2.3.0
   - Smoothed bot aim at range
   - Fixed bots_manage_fill_spec players being counted with bots_manage_fill_mode 1 (bot only)
   - Added bots_manage_fill_watchplayers dvar
   - Bots hop off turrets if they get stuck on one
   - Fixed script variable leak with opening and closing the in-game menu
+  - Works on latest Plutonium r5106
 
 - v2.2.0
   - Bots can now melee lunge
