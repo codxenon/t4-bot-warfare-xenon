@@ -7,13 +7,6 @@ It aims to add playable AI to the multiplayer games of World at War.
 
 You can find the ModDB release post [here](https://www.moddb.com/mods/bot-warfare/downloads/t4-bot-warfare-latest).
 
-## <span style="color:red">Important to public dedicated servers</span>
-The ```bots_main_firstIsHost``` DVAR is enabled by default!
-
-This is so inexperienced users of the mod can access with menu without any configuration.
-
-Make sure to disable this DVAR by adding ```set bots_main_firstIsHost 0``` in your server config!
-
 ## Contents
 - [Features](#Features)
 - [Installation](#Installation)
@@ -126,6 +119,7 @@ Make sure to disable this DVAR by adding ```set bots_main_firstIsHost 0``` in yo
   - Added bots_manage_fill_watchplayers dvar
   - Bots hop off turrets if they get stuck on one
   - Fixed script variable leak with opening and closing the in-game menu
+  - bots_main_firstIsHost is default off now as we now use Plutonium's `ishost` method call
   - Works on latest Plutonium r5106
 
 - v2.2.0
