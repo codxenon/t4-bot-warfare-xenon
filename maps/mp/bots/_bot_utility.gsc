@@ -181,16 +181,6 @@ BotBuiltinCmdExec( what )
 }
 
 /*
-*/
-BotBuiltinNotifyOnPlayerCommand( cmd, notif )
-{
-	if ( isdefined( level.bot_builtins ) && isdefined( level.bot_builtins[ "notifyonplayercommand" ] ) )
-	{
-		self [[ level.bot_builtins[ "notifyonplayercommand" ] ]]( cmd, notif );
-	}
-}
-
-/*
 	waw doesnt have
 */
 BotBuiltinIsHost()
