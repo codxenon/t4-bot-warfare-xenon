@@ -12,14 +12,8 @@ init()
 	level.bot_builtins[ "fs_fclose" ] = ::do_fs_fclose;
 	level.bot_builtins[ "fs_readline" ] = ::do_fs_readline;
 	level.bot_builtins[ "fs_writeline" ] = ::do_fs_writeline;
-	level.bot_builtins[ "notifyonplayercommand" ] = ::do_notifyonplayercommand;
 	level.bot_builtins[ "cmdexec" ] = ::do_cmdexec;
 	level.bot_builtins[ "ishost" ] = ::do_ishost;
-}
-
-do_notifyonplayercommand( a, b )
-{
-	self notifyonplayercommand( a, b );
 }
 
 do_cmdexec( a )
