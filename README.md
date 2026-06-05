@@ -1,3 +1,6 @@
+> [!NOTE]
+> This is a fork of [ineedbots/t4_bot_warfare](https://github.com/ineedbots/t4_bot_warfare) adapted for Xbox 360 (Xenon).
+
 ![GitHub Logo](/bw-assets/bw-logo.png)
 
 # T4 Bot Warfare
@@ -62,11 +65,9 @@ You can find the ModDB release post [here](https://www.moddb.com/mods/bot-warfar
 ## Documentation
 
 ### Menu Usage
-- You can open the menu by pressing the primary grenade and secondary grenade buttons together.
+- You can open the menu by pressing reload and melee together.
 
-- You can navigate the options by the pressing the ADS and fire keys, and you can select options by pressing your melee key.
-
-- Pressing the menu buttons again closes menus.
+- You can navigate the options with ADS and fire, select options with jump, and go back or close the menu with melee.
 
 ### DVARs
 | Dvar                             | Description                                                                                 | Default Value |
