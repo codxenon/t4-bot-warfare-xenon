@@ -745,8 +745,9 @@ AddOptions()
 	self AddMenu( "man_bots", 2, "Add 7 bot", ::man_bots, "add", 7 + _tempDvar );
 	self AddMenu( "man_bots", 3, "Add 11 bot", ::man_bots, "add", 11 + _tempDvar );
 	self AddMenu( "man_bots", 4, "Add 17 bot", ::man_bots, "add", 17 + _tempDvar );
-	self AddMenu( "man_bots", 5, "Kick a bot", ::man_bots, "kick", 1 );
-	self AddMenu( "man_bots", 6, "Kick all bots", ::man_bots, "kick", getBotArray().size );
+	self AddMenu( "man_bots", 5, "Add 23 bot", ::man_bots, "add", 23 + _tempDvar );
+	self AddMenu( "man_bots", 6, "Kick a bot", ::man_bots, "kick", 1 );
+	self AddMenu( "man_bots", 7, "Kick all bots", ::man_bots, "kick", getBotArray().size );
 	
 	_tempDvar = getdvarint( "bots_manage_fill_kick" );
 	
@@ -759,7 +760,7 @@ AddOptions()
 		_temp = "false";
 	}
 	
-	self AddMenu( "man_bots", 7, "Toggle auto bot kicking: " + _temp, ::man_bots, "autokick", _tempDvar );
+	self AddMenu( "man_bots", 8, "Toggle auto bot kicking: " + _temp, ::man_bots, "autokick", _tempDvar );
 	
 	_tempDvar = getdvarint( "bots_manage_fill_mode" );
 	
@@ -794,11 +795,11 @@ AddOptions()
 			break;
 	}
 	
-	self AddMenu( "man_bots", 8, "Change bot_fill_mode: " + _temp, ::man_bots, "fillmode", _tempDvar );
-	
+	self AddMenu( "man_bots", 9, "Change bot_fill_mode: " + _temp, ::man_bots, "fillmode", _tempDvar );
+
 	_tempDvar = getdvarint( "bots_manage_fill" );
-	self AddMenu( "man_bots", 9, "Increase bots to keep in-game: " + _tempDvar, ::man_bots, "fillup", _tempDvar );
-	self AddMenu( "man_bots", 10, "Decrease bots to keep in-game: " + _tempDvar, ::man_bots, "filldown", _tempDvar );
+	self AddMenu( "man_bots", 10, "Increase bots to keep in-game: " + _tempDvar, ::man_bots, "fillup", _tempDvar );
+	self AddMenu( "man_bots", 11, "Decrease bots to keep in-game: " + _tempDvar, ::man_bots, "filldown", _tempDvar );
 	
 	_tempDvar = getdvarint( "bots_manage_fill_spec" );
 	
@@ -811,7 +812,7 @@ AddOptions()
 		_temp = "false";
 	}
 	
-	self AddMenu( "man_bots", 11, "Count players for fill on spectator: " + _temp, ::man_bots, "fillspec", _tempDvar );
+	self AddMenu( "man_bots", 12, "Count players for fill on spectator: " + _temp, ::man_bots, "fillspec", _tempDvar );
 	
 	//
 	
