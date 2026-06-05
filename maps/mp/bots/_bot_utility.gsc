@@ -436,7 +436,7 @@ BotNotifyBotEvent_( msg, a, b, c, d, e, f, g )
 }
 
 /*
-	Notify the bot chat message
+	Notify a bot event
 */
 BotNotifyBotEvent( msg, a, b, c, d, e, f, g )
 {

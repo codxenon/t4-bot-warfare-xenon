@@ -268,8 +268,7 @@ init()
 	
 	level thread onPlayerConnect();
 	level thread handleBots();
-	level thread onPlayerChat();
-	
+
 	array_thread( getentarray( "misc_turret", "classname" ), ::turret_monitoruse_watcher );
 }
 
@@ -1224,24 +1223,6 @@ doFiringThread()
 	self.bots_firing = true;
 	wait 1;
 	self.bots_firing = false;
-}
-
-/*
-	When a player chats
-*/
-onPlayerChat()
-{
-	for ( ;; )
-	{
-		level waittill( "say", message, player, is_hidden );
-		
-		for ( i = 0; i < level.bots.size; i++ )
-		{
-			bot = level.bots[ i ];
-			
-			bot BotNotifyBotEvent( "chat", "chat", message, player, is_hidden );
-		}
-	}
 }
 
 /*
