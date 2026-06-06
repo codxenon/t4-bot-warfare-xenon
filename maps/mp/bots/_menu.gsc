@@ -167,6 +167,8 @@ watchDisconnect()
 		{
 			self.menuversionhud destroyFixed();
 		}
+
+		self MenuHudClose();
 	}
 }
 
@@ -448,16 +450,11 @@ OpenSub( menu, menu2 )
 
 		self.menuopen = true;
 		self freezecontrols( true );
+		self MenuHudOpen();
 	}
 	else
 	{
 		menuY = -160;
-
-		// Avoid overlap with the minimap.
-		if ( self.submenu == "man_bots" )
-		{
-			menuY = -70;
-		}
 
 		if ( isdefined( self.menutexty ) )
 		{
@@ -688,6 +685,17 @@ ExitMenu()
 	
 	self setclientdvar( "r_blur", "0" );
 	self setclientdvar( "sc_blur", "2" );
+	self MenuHudClose();
+}
+
+MenuHudOpen()
+{
+	self setclientdvar( "compassSize", "0.001" );
+}
+
+MenuHudClose()
+{
+	self setclientdvar( "compassSize", "1" );
 }
 
 initHudElem( txt, xl, yl )
